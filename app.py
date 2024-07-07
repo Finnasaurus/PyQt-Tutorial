@@ -1,66 +1,51 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
 import sys
+from random import choice
 
-# Subclass QMainWindow to easily customise app's main window.
-# This is kind of like the "properties" of the main window.
+windowTitles = [
+    'My App',
+    'My App',
+    "Still My App",
+    'Still My App',
+    'What on earth',
+    'What on earth',
+    'This is surprising',
+    'This is surprising',
+    'Something went wrong'
+]
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.n_times_clicked = 0
+
         self.setWindowTitle("My App")
 
         self.btn = QPushButton("Press-able Apparatus")
-        # self.btn.setCheckable(True)
-
-        # # == Connects to funcs that receives data == #
-        # btn.clicked.connect(self.the_btn_was_clicked)
-        # btn.clicked.connect(self.the_btn_was_tggled)
-
-        # # This variable stores the check status of btn.
-        # self.btn_is_checked = True
-
         self.btn.clicked.connect(self.the_btn_was_clicked)
-        # self.btn.setChecked(self.btn_is_checked)
+
+        # windowTitleCHanged signal is only emitted when the title changes
+        # setting title to the same thing doesn't fire of this signal
+        self.windowTitleChanged.connect(self.the_window_title_changed)
 
         self.setCentralWidget(self.btn)
 
-    # # == Receives check state data == #
-    # def the_btn_was_clicked(self):
-    #     print("Clicked")
-
-    # def the_btn_was_tggled(self, checked):
-    #     print("Checked?", checked)
-
-    # # == Receives check state data & modifies variable == #
-    # # Does the same thing as abv but I guess it's 
-    # # considered storing now since it's printing 
-    # # a variable.
-    # def the_btn_was_tggled(self, checked):
-    #     self.btn_is_checked = checked
-
-    #     print(self.btn_is_checked)
-
-    # == Receives check state & modifies interface == #
     def the_btn_was_clicked(self):
-        self.btn.setText("Apparatus has been modified permanantly.")
-        self.btn.setEnabled(False)
+        print("Clicked.")
+        new_window_title = choice(windowTitles)
+        print("Setting title: %s" % new_window_title)
+        self.setWindowTitle(new_window_title)
 
-        self.setWindowTitle("Our App: Communism Edition")
+    def the_window_title_changed(self, window_title):
+        print("Window title changed: %s" % window_title)
 
-# You need only one QApplication instance per app.
-# Sys.argy allows app to use command line arguments.
-# If you don't need system commands, QApplication([]) works.
+        if window_title == "Something went wrong":
+            self.button.setDisabled(True)
+
 app = QApplication(sys.argv)
 
-# Creates a Qt widget, which is the window.
 window = MainWindow()
-window.show() # <-- Must be done as windows are hidden by default.
+window.show()
 
-# Starts the loop.
 app.exec()
-
-# All top level widgets are windows, they don't have a parent
-# and aren't nested within another widget.
-# So, any widget can actually be a window, not just "QWidget()" or 
-# "QMainWindow()", and the name window is simply there to signify
-# that it is the MAIN widget.
