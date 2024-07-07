@@ -1,5 +1,20 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt6.QtCore import Qt, QSize
 import sys
+
+# Subclass QMainWindow to easily customise app's main window.
+# This is kind of like the "properties" of the main window.
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("My App")
+        btn = QPushButton("Press-able Apparatus")
+
+        self.setFixedSize(QSize(400, 300))
+
+        # Sets the central widget of the Window
+        self.setCentralWidget(btn)
 
 # You need only one QApplication instance per app.
 # Sys.argy allows app to use command line arguments.
@@ -7,7 +22,7 @@ import sys
 app = QApplication(sys.argv)
 
 # Creates a Qt widget, which is the window.
-window = QMainWindow()
+window = MainWindow()
 window.show() # <-- Must be done as windows are hidden by default.
 
 # Starts the loop.
