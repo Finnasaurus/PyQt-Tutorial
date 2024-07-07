@@ -1,5 +1,4 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
-from PyQt6.QtCore import Qt, QSize
 import sys
 
 # Subclass QMainWindow to easily customise app's main window.
@@ -9,12 +8,44 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("My App")
-        btn = QPushButton("Press-able Apparatus")
 
-        self.setFixedSize(QSize(400, 300))
+        self.btn = QPushButton("Press-able Apparatus")
+        # self.btn.setCheckable(True)
 
-        # Sets the central widget of the Window
-        self.setCentralWidget(btn)
+        # # == Connects to funcs that receives data == #
+        # btn.clicked.connect(self.the_btn_was_clicked)
+        # btn.clicked.connect(self.the_btn_was_tggled)
+
+        # # This variable stores the check status of btn.
+        # self.btn_is_checked = True
+
+        self.btn.clicked.connect(self.the_btn_was_clicked)
+        # self.btn.setChecked(self.btn_is_checked)
+
+        self.setCentralWidget(self.btn)
+
+    # # == Receives check state data == #
+    # def the_btn_was_clicked(self):
+    #     print("Clicked")
+
+    # def the_btn_was_tggled(self, checked):
+    #     print("Checked?", checked)
+
+    # # == Receives check state data & modifies variable == #
+    # # Does the same thing as abv but I guess it's 
+    # # considered storing now since it's printing 
+    # # a variable.
+    # def the_btn_was_tggled(self, checked):
+    #     self.btn_is_checked = checked
+
+    #     print(self.btn_is_checked)
+
+    # == Receives check state & modifies interface == #
+    def the_btn_was_clicked(self):
+        self.btn.setText("Apparatus has been modified permanantly.")
+        self.btn.setEnabled(False)
+
+        self.setWindowTitle("Our App: Communism Edition")
 
 # You need only one QApplication instance per app.
 # Sys.argy allows app to use command line arguments.
