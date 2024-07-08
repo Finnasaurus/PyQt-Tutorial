@@ -1,47 +1,33 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton,\
+      QLabel, QLineEdit, QVBoxLayout, QWidget
 import sys
 from random import choice
 
-windowTitles = [
-    'My App',
-    'My App',
-    "Still My App",
-    'Still My App',
-    'What on earth',
-    'What on earth',
-    'This is surprising',
-    'This is surprising',
-    'Something went wrong'
-]
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.n_times_clicked = 0
-
         self.setWindowTitle("My App")
 
-        self.btn = QPushButton("Press-able Apparatus")
-        self.btn.clicked.connect(self.the_btn_was_clicked)
+        self.label = QLabel()
 
-        # windowTitleCHanged signal is only emitted when the title changes
-        # setting title to the same thing doesn't fire of this signal
-        self.windowTitleChanged.connect(self.the_window_title_changed)
+        self.input = QLineEdit()
+        # Line below connects the input box to the text line
+        # everytime something changes in the input box, the
+        # label reflects it
+        self.input.textChanged.connect(self.label.setText)
 
-        self.setCentralWidget(self.btn)
+        layout = QVBoxLayout()
+        layout.addWidget(self.input)
+        layout.addWidget(self.label)
 
-    def the_btn_was_clicked(self):
-        print("Clicked.")
-        new_window_title = choice(windowTitles)
-        print("Setting title: %s" % new_window_title)
-        self.setWindowTitle(new_window_title)
+        container = QWidget()
+        container.setLayout(layout)
 
-    def the_window_title_changed(self, window_title):
-        print("Window title changed: %s" % window_title)
-
-        if window_title == "Something went wrong":
-            self.button.setDisabled(True)
+        # Sets the central widget
+        self.setCentralWidget(container)
 
 app = QApplication(sys.argv)
 
